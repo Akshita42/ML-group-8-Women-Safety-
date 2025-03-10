@@ -1,0 +1,5 @@
+"""exact metrics of results including accuracy,recall, precision have not been achieved yet
+work is under the way but the model is detecting the wake word and sending an sos, an image named wake word and sos results has been inserted """
+"""results and advantages part of the patent will be done after the above has been achieved  """
+""" we are still working on the model that will achieve user customization in the wake word"""
+""" gesture detection"""
