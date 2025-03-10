@@ -1,0 +1,11 @@
+# dataset used: Google Speech Commands Dataset( download size is 2.37 gb and uncompressed it is 8.17)
+# link for more details : https://www.tensorflow.org/datasets/catalog/speech_commands
+#downloaded the dataset using following code:-
+
+pip install tensorflow-datasets
+
+import tensorflow_datasets as tfds
+dataset, info = tfds.load('speech_commands', with_info=True, shuffle_files=True)
+print(info)
+
+# this dataset will be used in the 2nd stage of the model where we train a model for custom user defined wake word
