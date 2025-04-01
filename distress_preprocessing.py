@@ -37,5 +37,5 @@ for actor_folder in tqdm(os.listdir(DATASET_PATH), desc="Processing Actors"):
 columns = ["file_path"] + [f"mfcc_{i}" for i in range(13)] + ["label"]
 df = pd.DataFrame(data, columns=columns)
 
-df.to_csv("E:/distressdetection/processed_data.csv", index=False)
-print("Feature extraction complete! Data saved to processed_data.csv")
+df.to_csv("E:/distressdetection/distress_processed_data.csv", index=False)
+print("Data saved to distress_processed_data.csv")
