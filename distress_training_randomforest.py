@@ -63,7 +63,7 @@ y_pred = best_model.predict(X_test)
 
 accuracy = accuracy_score(y_test, y_pred)
 print(f"Optimized Model Accuracy: {accuracy:.4f}")
-print("🔹 Classification Report:")
+print(" Classification Report:")
 print(classification_report(y_test, y_pred))
 
 # Confusion Matrix
