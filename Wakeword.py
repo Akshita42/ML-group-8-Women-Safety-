@@ -1,61 +1,112 @@
-import pvporcupine  # Detects wake word
-import pyaudio  # Handles microphone input
-import struct  # Converts audio data
-from twilio.rest import Client  # Sends SMS alerts
-import os # Lets us use system variables 
-from dotenv import load_dotenv #Used to get secret info from .env file
-from twilio.rest import Client # Needed to send SMS using Twilio
+import pvporcupine
+import pyaudio
+import struct
+import os
+import geocoder
+from dotenv import load_dotenv
+from twilio.rest import Client
+from flask import Flask, jsonify, request
+import threading
 
-load_dotenv(r"C:\Users\akshi\OneDrive\Desktop\Women safety\twilio.env") # Load the .env file that contains Twilio credentials
+# Load environment variables
+load_dotenv("twilio.env")
 
-# Get the Twilio details from the .env file
+# Twilio + Porcupine keys
 TWILIO_SID = os.getenv("TWILIO_ACCOUNT_SID")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE") #Twilio number that sends the message  
-EMERGENCY_CONTACT = os.getenv("EMERGENCY_CONTACT") #number that will receive the SOS alert
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE")
+EMERGENCY_CONTACT = os.getenv("EMERGENCY_CONTACT")
+PICOVOICE_ACCESS_KEY = os.getenv("PICOVOICE_ACCESS_KEY")
 
-# It initializes Porcupine with a custom wake word model
-porcupine = pvporcupine.create(
-    access_key="hmq36RWoWvdsQdKbLsm6l5dyWn9bvdNj86J4vpq+cuqQG7xy45iN9Q==",  # Picovoice key
-    keyword_paths=[r"C:\Users\akshi\Downloads\help-me_en_windows_v3_0_0 (1)\help-me_en_windows_v3_0_0.ppn"]  #wake word file path
-)
+# Flask app
+app = Flask(__name__)
+latest_gps_location = None  # ⬅️ Accurate location from phone will be saved here
 
-# sets up microphone input
-pa = pyaudio.PyAudio()
-stream = pa.open(
-    rate=porcupine.sample_rate,
-    channels=1,
-    format=pyaudio.paInt16,
-    input=True,
-    frames_per_buffer=porcupine.frame_length
-)
+# Use GPS location from phone if available
+def get_location():
+    if latest_gps_location:
+        return latest_gps_location
+    location = geocoder.ip('me')
+    if location.ok:
+        return f"https://www.google.com/maps?q={location.latlng[0]},{location.latlng[1]}"
+    return "Location not found"
 
-print(" Listening for 'Help Me'...")
+# Endpoint to receive GPS location from Kivy Android app
+@app.route('/save-location')
+def save_location():
+    global latest_gps_location
+    lat = request.args.get('lat')
+    lng = request.args.get('lng')
+    if lat and lng:
+        latest_gps_location = f"https://www.google.com/maps?q={lat},{lng}"
+        print("📍 Accurate GPS Location received:", latest_gps_location)
+        return "Location saved!"
+    return "Missing lat/lng", 400
 
+# For checking current location (testing)
+@app.route('/location')
+def location_api():
+    return jsonify({"location": get_location()})
 
+@app.route("/")
+def home():
+    return "Wake word SOS system running!"
 
-
-# sends an SOS message
+# Send SOS alert via SMS
 def send_sos_alert():
-    client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)  # It initializes Twilio client
-    message = client.messages.create(
-        body="SOS Alert! I need help!",
+    client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
+    location_link = get_location()
+    client.messages.create(
+        body=f"🚨 SOS Alert! I need help!\nMy Location: {location_link}",
         from_=TWILIO_PHONE_NUMBER,
         to=EMERGENCY_CONTACT
     )
-    print(" SOS Alert Sent!")  # It confirms SOS was sent
+    print("✅ SOS Alert Sent!")
 
-# listens for wake word
-while True:
-    pcm = stream.read(porcupine.frame_length)  # captures audio
-    pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)  # It processes audio
+# Wake word detection
+def listen_for_wake_word():
+    porcupine = pvporcupine.create(
+    access_key=PICOVOICE_ACCESS_KEY,
+    keyword_paths=[
+    r"C:\Users\akshi\Downloads\Help-me_en_windows_v3_0_0 (2)\Help-me_en_windows_v3_0_0.ppn",
+    r"C:\Users\akshi\Downloads\Red-Red-Red_en_windows_v3_0_0\Red-Red-Red_en_windows_v3_0_0.ppn"
+    ]
 
-    if porcupine.process(pcm) >= 0:  # It checks if wake word is detected
-        print(" Wake Word Detected! Sending SOS...")
-        send_sos_alert()  
-        break  
+)
 
-# cleans up resources
-stream.close()
-pa.terminate()
-porcupine.delete()
+    pa = pyaudio.PyAudio()
+    stream = pa.open(
+        rate=porcupine.sample_rate,
+        channels=1,
+        format=pyaudio.paInt16,
+        input=True,
+        frames_per_buffer=porcupine.frame_length
+    )
+    print("🎤 Listening for wake word...")
+
+    try:
+        while True:
+            pcm = stream.read(porcupine.frame_length, exception_on_overflow=False)
+            pcm = struct.unpack_from("h" * porcupine.frame_length, pcm)
+            keyword_index = porcupine.process(pcm)
+            if keyword_index == 0:
+                detected_word = "help me"
+                print(f"🔊 Wake Word Detected: {detected_word}")
+                send_sos_alert()
+            elif keyword_index == 1:
+                detected_word = "Red Red Red"
+                print(f"🔊 Wake Word Detected: {detected_word}")
+                send_sos_alert()
+
+
+    except KeyboardInterrupt:
+        pass
+    finally:
+        stream.close()
+        pa.terminate()
+        porcupine.delete()
+
+# Run Flask + Wake Word in parallel
+if __name__ == '__main__':
+    threading.Thread(target=listen_for_wake_word, daemon=True).start()
+    app.run(host='0.0.0.0', port=5000)
