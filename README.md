@@ -17,7 +17,7 @@ It is built using:
 
 - Wake Word Activation – Detects the phrase "Help Me" using Porcupine.  
 - Emergency SMS Alert – Sends an SOS message to a predefined emergency contact.  
-- Distress Detection – Uses Librosa with a Random Forest model trained on the RAVDESS dataset.  
+- Distress Detection – Uses Librosa with a SVM model trained on the RAVDESS dataset.  
 - Shake Detection – Uses a CNN + LSTM model for smarter distress detection.  
 - Environment Variables for Security – Stores sensitive credentials in a `.env` file.  
 - Customizable – Can be extended with GPS tracking, voice authentication, etc.  
