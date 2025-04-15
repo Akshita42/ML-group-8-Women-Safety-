@@ -1,9 +1,9 @@
 
 ML-group-8-Women-Safety  
-Women Safety SOS Wake Word Detection  
+Women Safety alert system
 
 📌 About the Project  
-This project is an SOS Alert System that listens for a custom wake word ("Help Me") and sends an emergency SMS alert to a predefined contact using Twilio.  
+This project is an SOS Alert System that listens for custom wake words ("Help Me" or "red red red") and sends an emergency SMS alert to a predefined contact using Twilio.  
 
 It is built using:  
 
@@ -37,7 +37,7 @@ It is built using:
 How It Works:  
 
 - The script listens for the wake word using the microphone.  
-- If the wake word "Help Me" is detected, the script triggers an SOS alert.  
+- If the wake word "Help Me" or "red red red" is detected, the script triggers an SOS alert.  
 - The distress detection model analyzes the audio using MFCC features to identify distress.  
 - The shake detection model detects rapid movements for silent distress activation.  
 - An SMS alert is sent to the predefined emergency contact.  
@@ -45,5 +45,4 @@ How It Works:
 Future Improvements:  
 
 - GPS Location Sharing – Send location along with SOS.  
-- Offline Support – Work without an internet connection.  
 - AI-Based Voice Analysis – More advanced distress detection models.  
