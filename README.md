@@ -15,7 +15,7 @@ It is built using:
 
 ✨ Features:  
 
-- Wake Word Activation – Detects the phrase "Help Me" using Porcupine.  
+- Wake Word Activation – Detects the phrase "Help Me" or "red red red" using Porcupine.  
 - Emergency SMS Alert – Sends an SOS message to a predefined emergency contact.  
 - Distress Detection – Uses Librosa with a SVM model trained on the RAVDESS dataset.  
 - Shake Detection – Uses a CNN + LSTM model for smarter distress detection.  
