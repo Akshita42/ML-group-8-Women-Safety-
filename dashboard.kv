@@ -1,0 +1,127 @@
+#:kivy 2.1.0
+<DashboardScreen>:
+    name: "dashboard"
+    BoxLayout:
+        orientation: "vertical"
+        padding: dp(20)
+        spacing: dp(15)
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "Women Safety Dashboard"
+            font_size: '24sp'
+            color: 0.5, 0, 0.3, 1
+            bold: True
+            size_hint_y: None
+            height: dp(40)
+
+        BoxLayout:
+            orientation: "vertical"
+            padding: dp(15)
+            spacing: dp(10)
+            canvas.before:
+                Color:
+                    rgba: 1, 0.9, 0.95, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [12]
+
+            Label:
+                text: "🎛 Select Mode"
+                font_size: '18sp'
+                color: 0.5, 0, 0.3, 1
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                Button:
+                    text: "Auto Listening"
+                    on_press: root.set_mode("auto")
+                    background_color: 0.9, 0.5, 0.7, 1
+                    color: 1, 1, 1, 1
+                Button:
+                    text: "Manual Mode"
+                    on_press: root.set_mode("manual")
+                    background_color: 0.9, 0.5, 0.7, 1
+                    color: 1, 1, 1, 1
+
+        Label:
+            id: sos_status_label  # Fixed id to match Python code
+            text: ""
+            font_size: '16sp'
+            color: 0.5, 0, 0.3, 1
+
+        BoxLayout:
+            id: manual_controls
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(50)
+            spacing: dp(10)
+            opacity: 0
+            Button:
+                id: manual_sos_btn
+                text: "Send SOS"
+                on_press: root.manual_sos()
+                background_color: 1, 0.4, 0.6, 1
+                color: 1, 1, 1, 1
+            Label:
+                id: cancel_timer_label
+                text: ""
+                color: 0.5, 0, 0.3, 1
+
+        BoxLayout:
+            id: auto_controls
+            orientation: 'vertical'
+            size_hint_y: None
+            height: dp(80)
+            spacing: dp(5)
+            opacity: 0
+            Label:
+                text: "Say 'Help me' or 'Red red red' to trigger SOS"
+                font_size: '14sp'
+                color: 0.5, 0, 0.3, 1
+            Button:
+                id: auto_cancel_btn  # Added id for cancel button
+                text: "Cancel SOS"
+                on_press: root.cancel_sos()
+                background_color: 1, 0.4, 0.6, 1
+                color: 1, 1, 1, 1
+
+        BoxLayout:
+            orientation: "vertical"
+            padding: dp(10)
+            spacing: dp(5)
+            canvas.before:
+                Color:
+                    rgba: 0.95, 0.95, 1, 1
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [10]
+
+            Label:
+                text: "📋 Recent SOS Alerts"
+                font_size: '18sp'
+                color: 0.5, 0, 0.3, 1
+                size_hint_y: None
+                height: dp(30)
+
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                size_hint_y: 0.25
+                Label:
+                    id: sos_log_label
+                    text: ""
+                    font_size: '14sp'
+                    color: 0.5, 0, 0.3, 1
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None

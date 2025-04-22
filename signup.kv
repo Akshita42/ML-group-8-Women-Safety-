@@ -1,0 +1,72 @@
+#:kivy 2.1.0
+
+<SignUpScreen>:
+    name: 'signup'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 15
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1  # White background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Image:
+            source: 'assets/logo.png'
+            size_hint_y: None
+            height: 100
+
+        Label:
+            text: 'Create an Account'
+            color: 0.5, 0, 0.2, 1
+            font_size: 20
+            size_hint_y: None
+            height: 40
+
+        TextInput:
+            id: name_input
+            hint_text: "Full Name"
+            multiline: False
+
+        TextInput:
+            id: email_input
+            hint_text: "Email"
+            multiline: False
+
+        TextInput:
+            id: phone_input
+            hint_text: "Phone Number"
+            multiline: False
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+
+        TextInput:
+            id: confirm_input
+            hint_text: "Confirm Password"
+            password: True
+            multiline: False
+
+        Label:
+            id: error_label
+            text: ""
+            color: 1, 0, 0, 1
+            font_size: 14
+            size_hint_y: None
+            height: 20
+
+        Button:
+            text: "Sign Up"
+            background_color: 0.5, 0, 0.2, 1
+            on_press: root.validate_signup()
+
+        Button:
+            text: "Back to Login"
+            background_color: 0, 0, 0, 0
+            color: 0.5, 0, 0.2, 1
+            on_press: app.root.current = 'login'

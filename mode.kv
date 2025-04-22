@@ -1,0 +1,63 @@
+#:kivy 2.1.0
+<ModeScreen>:
+    name: "mode"
+    BoxLayout:
+        orientation: "vertical"
+        padding: [20, 50]
+        spacing: 30
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.width, self.width  # Square shape
+
+        Label:
+            text: "Select a Mode"
+            font_size: '30sp'
+            bold: True
+            color: 0.2, 0, 0.2, 1
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_x: 0.90
+            pos_hint: {'center_x': 0.5}
+            spacing: 20
+
+            ToggleButton:
+                text: "[b]🎧 Auto Listening Mode[/b]\n[i]Use when outside or feeling unsafe.\nListens in background for wake word or gesture.[/i]"
+                group: "mode"
+                markup: True
+                font_size: '18sp'
+                background_color: 1, 0.6, 0.8, 1
+                color: 0.1, 0, 0.1, 1
+                size_hint_y: None
+                height: dp(90)
+                on_press: root.set_mode("auto")
+
+            ToggleButton:
+                text: "[b]🔋 Manual Mode[/b]\n[i]Use to save battery. Manually trigger SOS.\nIt will send GPS to emergency contacts.[/i]"
+                group: "mode"
+                markup: True
+                font_size: '18sp'
+                background_color: 1, 0.6, 0.8, 1
+                color: 0.1, 0, 0.1, 1
+                size_hint_y: None
+                height: dp(90)
+                on_press: root.set_mode("manual")
+
+        Widget:
+            size_hint_y: 1
+
+        Button:
+            text: "[b]✅ Continue[/b]"
+            markup: True
+            font_size: '20sp'
+            size_hint: 0.5, None
+            height: dp(45)
+            pos_hint: {"center_x": 0.5}
+            background_color: 0.5, 0, 0.2, 1
+            color: 1, 1, 1, 1
+            on_press: root.go_to_dashboard()

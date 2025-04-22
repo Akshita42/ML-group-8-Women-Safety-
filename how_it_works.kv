@@ -1,0 +1,86 @@
+#:kivy 2.1.0
+
+<HowItWorksScreen>:
+    name: "how_it_works"
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(30)
+        spacing: dp(20)
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1  # White background color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "📖 How the App Works"
+            font_size: '24sp'
+            color: 0.4, 0, 0.2, 1  # Dark pink color for title text
+            bold: True
+            size_hint_y: None
+            height: dp(50)
+            halign: 'center'
+
+        ScrollView:
+            BoxLayout:
+                orientation: 'vertical'
+                padding: dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+
+                Label:
+                    text: "🔊 Auto Listening Mode:\nListens in the background for a Wake Word to trigger SOS automatically.\nBest for when you're traveling alone or in risky areas."
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'middle'
+                    font_size: '16sp'
+                    color: 0, 0, 0, 1  # Black color for this label
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    padding: dp(10)
+
+                Label:
+                    text: "📱 Manual Mode:\nWake word is turned off. You can send SOS by pressing the 'Manual SOS' button.\nBest for safe zones or to save battery."
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'middle'
+                    font_size: '16sp'
+                    color: 0, 0, 0, 1  # Black color for this label
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    padding: dp(10)
+
+                Label:
+                    text: "🗣️ In Future: Distress Detection:\nSOS will only be triggered when the wake word is spoken in a distressed tone (not happy/normal).\nHelps avoid false alarms."
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'middle'
+                    font_size: '16sp'
+                    color: 0, 0, 0, 1  # Black color for this label
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    padding: dp(10)
+
+                Label:
+                    text: "✋ In Future: Gesture SOS:\nIf your mouth is covered and you can’t speak, shaking the phone 3 times will trigger an SOS silently."
+                    text_size: self.width, None
+                    halign: 'left'
+                    valign: 'middle'
+                    font_size: '16sp'
+                    color: 0, 0, 0, 1  # Black color for this label
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    padding: dp(10)
+
+        Button:
+            text: "Continue"
+            size_hint_y: None
+            height: dp(50)
+            background_color: 0.4, 0, 0.2, 1  # Dark pink button color
+            color: 1, 1, 1, 1  # White text color for the button
+            on_release: root.go_to_dashboard()
+            size_hint_x: None
+            width: dp(200)
+            pos_hint: {"center_x": 0.5}
+            padding: dp(15)

@@ -1,0 +1,70 @@
+#:kivy 2.1.0
+
+<LoginScreen>:
+    name: 'login'
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 40
+        spacing: 20
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1  # White background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Image:
+            source: 'assets/logo.png'
+            size_hint_y: None
+            height: 50
+            size: (300, 300)
+
+        Label:
+            text: 'Login to Your Account'
+            color: 0.5, 0, 0.2, 1
+            font_size: 20
+            size_hint_y: None
+            height: 40
+
+        TextInput:
+            id: email_input
+            hint_text: "Email"
+            multiline: False
+            size_hint_y: None
+            height: 50
+            background_color: 1, 1, 1, 1
+            foreground_color: 0, 0, 0, 1
+
+        TextInput:
+            id: password_input
+            hint_text: "Password"
+            password: True
+            multiline: False
+            size_hint_y: None
+            height: 50
+            background_color: 1, 1, 1, 1
+            foreground_color: 0, 0, 0, 1
+
+        Label:
+            id: error_label
+            text: ""
+            color: 1, 0, 0, 1
+            font_size: 14
+            size_hint_y: None
+            height: 20
+
+        Button:
+            text: "Login"
+            background_color: 0.5, 0, 0.2, 1
+            size_hint_y: None
+            height: 50
+            on_press: root.validate_login()
+
+        Label:
+            text: "[ref=signup]Don't have an account? Sign up[/ref]"
+            markup: True
+            color: 0.5, 0, 0.2, 1
+            font_size: 14
+            size_hint_y: None
+            height: 30
+            on_ref_press: app.root.current = 'signup'

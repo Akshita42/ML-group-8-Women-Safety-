@@ -1,0 +1,43 @@
+#:kivy 2.1.0
+
+<WelcomeScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: [50, 80]
+        spacing: 30
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1  # White background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Image:
+            source: "assets/logo.png"
+            size_hint: (None, None)
+            size: (500, 500)
+            allow_stretch: True
+            keep_ratio: True
+            pos_hint: {"center_x": 0.5}
+
+        Label:
+            text: "Women Alert Safety System"
+            font_size: 50
+            bold: True
+            halign: "center"
+            color: (0.76, 0.09, 0.36, 1)  # Dark pink
+
+        Label:
+            text: "Empowering safety through AI-powered alerts"
+            font_size: 28
+            halign: "center"
+            color: (0.3, 0.3, 0.3, 1)
+
+        Button:
+            text: "Get Started"
+            size_hint: (None, None)
+            size: (200, 50)
+            pos_hint: {"center_x": 0.5}
+            background_color: (0.76, 0.09, 0.36, 1)  # Dark pink button
+            color: 1,1,1
+            on_press: app.root.current = 'login'
